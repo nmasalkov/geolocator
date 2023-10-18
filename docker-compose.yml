@@ -1,0 +1,25 @@
+version: '3'
+services:
+  web:
+    build:
+      dockerfile: Dockerfile
+    command: ["rails", "server", "-b", "0.0.0.0"]
+    volumes:
+      - ./:/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    env_file:
+      - .env   # Credentials stored here for test purposes :) They should never be stored in repo
+    tty: true
+    stdin_open: true
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
